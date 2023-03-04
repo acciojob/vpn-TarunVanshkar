@@ -27,7 +27,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         {
             throw new Exception("Already connected");
         }
-        else if(user.getCountry().getCountryName().equals(countryName))
+        else if(user.getOriginalCountry().getCountryName().equals(countryName))
         {
             return user;
         }
@@ -74,9 +74,9 @@ public class ConnectionServiceImpl implements ConnectionService {
         {
             throw new Exception("Cannot establish communication");
         }
-        if(sender.getCountry() != receiver.getCountry())
+        if(sender.getOriginalCountry() != receiver.getOriginalCountry())
         {
-            connect(senderId, sender.getCountry().getCountryName().toString());
+            connect(senderId, sender.getOriginalCountry().getCountryName().toString());
         }
         return sender;
     }
