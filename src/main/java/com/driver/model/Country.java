@@ -11,12 +11,13 @@ public class Country
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    CountryName countryName;
-    String code;
+    private CountryName countryName;
+    private String code;
 
 
     //Connect Country(Parent) to User(Child) --> One : One
     @OneToOne
+    @JoinColumn
     private User user;
 
     public User getUser() {

@@ -11,8 +11,8 @@ public class Admin
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    String username;
-    String password;
+    private String username;
+    private String password;
 
     //Connect Admin(Parent) to ServiceProvider(Child) --> One : Many
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)

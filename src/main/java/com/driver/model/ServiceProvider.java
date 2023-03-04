@@ -11,7 +11,7 @@ public class ServiceProvider
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    String name;
+    private String name;
 
     //Connect Admin(Parent) to ServiceProvider(Child) --> One : Many
     @ManyToOne

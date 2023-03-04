@@ -12,24 +12,17 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    String username;
-    String password;
-    String originalIp;
-    String maskedIp;
-    Boolean connected;
+    private String username;
+    private String password;
+    private String originalIp;
+    private String maskedIp;
+    private Boolean connected;
 
 
     //Connect Country(Parent) to User(Child) --> One : One
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Country originalCountry;
 
-//    public Country getCountry() {
-//        return country;
-//    }
-//
-//    public void setCountry(Country country) {
-//        this.country = country;
-//    }
 
     public Country getOriginalCountry() {
         return originalCountry;
