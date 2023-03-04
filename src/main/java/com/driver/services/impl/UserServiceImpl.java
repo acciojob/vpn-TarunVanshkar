@@ -27,8 +27,9 @@ public class UserServiceImpl implements UserService
     @Override
     public User register(String username, String password, String countryName) throws Exception
     {
-        if(countryName.equals("aus")|| countryName.equals("usa") || countryName.equals("ind") ||
-                countryName.equals("jpn") || countryName.equals("chi"))
+        if(countryName.equalsIgnoreCase("aus")|| countryName.equalsIgnoreCase("usa")
+                || countryName.equalsIgnoreCase("ind") ||
+                countryName.equalsIgnoreCase("jpn") || countryName.equalsIgnoreCase("chi"))
         {
             User user = new User();
             user.setUsername(username);
