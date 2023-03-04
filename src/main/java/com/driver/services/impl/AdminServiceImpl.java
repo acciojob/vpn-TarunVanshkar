@@ -57,14 +57,19 @@ public class AdminServiceImpl implements AdminService
         admin.setServiceProviders(serviceProviderList);
         serviceProvider.setAdmin(admin);
         adminRepository1.save(admin);
-        serviceProviderRepository1.save(serviceProvider);
+        //serviceProviderRepository1.save(serviceProvider);
         return admin;
     }
 
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception
     {
-        if(!countryName.equals("ind") || !countryName.equals("aus") || !countryName.equals("usa") || !countryName.equals("chi") || !countryName.equals("jpn"))
+//        if(!countryName.equals("ind") || !countryName.equals("aus") || !countryName.equals("usa") || !countryName.equals("chi") || !countryName.equals("jpn"))
+//        {
+//            throw new Exception("Country not found");
+//        }
+
+        if(countryName==null)
         {
             throw new Exception("Country not found");
         }
