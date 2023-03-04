@@ -27,26 +27,55 @@ public class UserServiceImpl implements UserService
     @Override
     public User register(String username, String password, String countryName) throws Exception
     {
-        if(username==null || password==null || countryName==null)
+        if(countryName.equals("aus")|| countryName.equals("usa") || countryName.equals("ind") ||
+                countryName.equals("jpn") || countryName.equals("chi"))
+        {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+
+            Country country = new Country();
+
+            if (countryName.equals("aus"))
+            {
+                country.setCountryName(CountryName.AUS);
+                country.setCode(CountryName.AUS.toCode());
+            }
+            if (countryName.equals("usa"))
+            {
+                country.setCountryName(CountryName.USA);
+                country.setCode(CountryName.USA.toCode());
+            }
+            if (countryName.equals("ind"))
+            {
+                country.setCountryName(CountryName.IND);
+                country.setCode(CountryName.IND.toCode());
+            }
+            if (countryName.equals("jpn"))
+            {
+                country.setCountryName(CountryName.JPN);
+                country.setCode(CountryName.JPN.toCode());
+            }
+            if (countryName.equals("chi"))
+            {
+                country.setCountryName(CountryName.CHI);
+                country.setCode(CountryName.CHI .toCode());
+            }
+
+            user.setOriginalCountry(country);
+            user.setConnected(false);
+
+            String originalIp = country.getCode()+"."+user.getId();
+            user.setOriginalIp(originalIp);
+            country.setUser(user);
+
+            userRepository3.save(user);
+            return user;
+        }
+        else
         {
             throw new Exception();
         }
-        CountryName countryName1 = CountryName.valueOf(countryName);
-
-        Country country = new Country();
-        country.setCountryName(countryName1);
-        country.setCode(countryName1.toCode());
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setOriginalIp(country.getCode()+"."+user.getId());
-        user.setMaskedIp(null);
-        user.setConnected(false);
-
-        country.setUser(user);
-        countryRepository3.save(country);  // child will be automatically saved
-        return user;
     }
 
     @Override
@@ -59,7 +88,8 @@ public class UserServiceImpl implements UserService
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
         serviceProviderList.add(serviceProvider);
         user.setServiceProviderList(serviceProviderList);
-        userRepository3.save(user);
+        serviceProvider.getUsers().add(user);
+
         serviceProviderRepository3.save(serviceProvider);
         return user;
     }
