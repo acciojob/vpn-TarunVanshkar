@@ -47,7 +47,8 @@ public class User
 
 
     //Connect User(Parent) to ServiceProvider(Child) --> Many : Many
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinColumn
     private List<ServiceProvider> serviceProviderList;
 
     public List<ServiceProvider> getServiceProviderList() {

@@ -55,9 +55,12 @@ public class ServiceProvider
 
 
     //Connect User(Parent) to ServiceProvider(Child) --> Many : Many
-    @ManyToMany
-    @JoinTable(name = "service_user", joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id")
-    , inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+//    @ManyToMany
+//    @JoinTable(name = "service_user", joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id")
+//    , inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+//    private List<User> users;
+
+    @ManyToMany(mappedBy = "serviceProviderList", cascade = CascadeType.ALL)
     private List<User> users;
 
     public List<User> getUsers() {
