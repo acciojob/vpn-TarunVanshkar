@@ -20,9 +20,8 @@ public class User
 
 
     //Connect Country(Parent) to User(Child) --> One : One
-    @OneToOne
-    @JoinColumn
-    private Country country;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Country originalCountry;
 
 //    public Country getCountry() {
 //        return country;
@@ -33,11 +32,11 @@ public class User
 //    }
 
     public Country getOriginalCountry() {
-        return country;
+        return originalCountry;
     }
 
     public void setOriginalCountry(Country country) {
-        this.country = country;
+        this.originalCountry = country;
     }
 
 

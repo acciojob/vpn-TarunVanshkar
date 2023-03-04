@@ -16,7 +16,7 @@ public class Country
 
 
     //Connect Country(Parent) to User(Child) --> One : One
-    @OneToOne(mappedBy = "country", cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 
     public User getUser() {

@@ -23,11 +23,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User connect(int userId, String countryName) throws Exception
     {
         User user = userRepository2.findById(userId).get();
-        if(user.getConnected()==true)
+        if(user.getConnected())
         {
             throw new Exception("Already connected");
         }
-        else if(user.getOriginalCountry().getCountryName().equals(countryName))
+        else if(user.getOriginalCountry().getCountryName().name().equals(countryName))
         {
             return user;
         }
@@ -36,14 +36,19 @@ public class ConnectionServiceImpl implements ConnectionService {
         for(ServiceProvider serviceProvider : serviceProviderList)
         {
             List<Country> countryList = serviceProvider.getCountryList();
-            if(countryList.contains(countryName))
+            for(Country country : countryList)
             {
-                user.setConnected(true);
-                CountryName countryName1 = CountryName.valueOf(countryName);
-                user.setMaskedIp(countryName1.toCode()+"."+serviceProvider.getId()+"."+userId);
-                userRepository2.save(user);
-                return user;
+                String currCountry = country.getCountryName().name();
+                if(currCountry.equals(countryName))
+                {
+                    user.setConnected(true);
+                    CountryName countryName1 = CountryName.valueOf(countryName);
+                    user.setMaskedIp(countryName1.toCode()+"."+serviceProvider.getId()+"."+userId);
+                    userRepository2.save(user);
+                    return user;
+                }
             }
+
         }
 
         throw new Exception("Unable to connect");
@@ -54,7 +59,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         //If the given user was not connected to a vpn, throw "Already disconnected" exception.
         //Else, disconnect from vpn, make masked Ip as null, update relevant attributes and return updated user.
         User user = userRepository2.findById(userId).get();
-        if(user.getConnected()==false)
+        if(!user.getConnected())
         {
             throw new Exception("Already disconnected");
         }
@@ -67,17 +72,22 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User communicate(int senderId, int receiverId) throws Exception
     {
-        User sender = userRepository2.findById(senderId).get();
-        User receiver = userRepository2.findById(receiverId).get();
 
-        if(sender==null || receiver==null)
+        try
+        {
+            User sender = userRepository2.findById(senderId).get();
+            User receiver = userRepository2.findById(receiverId).get();
+            if(sender.getOriginalCountry() != receiver.getOriginalCountry())
+            {
+                String country = sender.getOriginalCountry().getCountryName().name();
+                connect(senderId, country);
+            }
+            return sender;
+        }
+        catch (Exception e)
         {
             throw new Exception("Cannot establish communication");
         }
-        if(sender.getOriginalCountry() != receiver.getOriginalCountry())
-        {
-            connect(senderId, sender.getOriginalCountry().getCountryName().toString());
-        }
-        return sender;
+
     }
 }

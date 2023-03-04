@@ -64,37 +64,36 @@ public class AdminServiceImpl implements AdminService
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception
     {
-//        if(!countryName.equals("ind") || !countryName.equals("aus") || !countryName.equals("usa") || !countryName.equals("chi") || !countryName.equals("jpn"))
-//        {
-//            throw new Exception("Country not found");
-//        }
+        if(countryName.equals("ind") || countryName.equals("aus") || countryName.equals("usa") || countryName.equals("chi") || countryName.equals("jpn"))
+        {
+            ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).get();
 
-        if(countryName==null)
+            Country country = new Country();
+            CountryName countryName1 = CountryName.valueOf(countryName);
+            country.setCountryName(countryName1);
+            country.setCode(countryName1.toCode());
+            country.setServiceProvider(serviceProvider);
+
+            List<Country> countryList;
+            if(serviceProvider.getCountryList()==null)
+            {
+                countryList = new ArrayList<>();
+            }
+            else
+            {
+                countryList = serviceProvider.getCountryList();
+            }
+            countryList.add(country);
+
+            countryRepository1.save(country);
+            serviceProviderRepository1.save(serviceProvider);
+            return serviceProvider;
+        }
+        else
         {
             throw new Exception("Country not found");
         }
 
-        ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).get();
 
-        Country country = new Country();
-        CountryName countryName1 = CountryName.valueOf(countryName);
-        country.setCountryName(countryName1);
-        country.setCode(countryName1.toCode());
-        country.setServiceProvider(serviceProvider);
-
-        List<Country> countryList;
-        if(serviceProvider.getCountryList()==null)
-        {
-            countryList = new ArrayList<>();
-        }
-        else
-        {
-            countryList = serviceProvider.getCountryList();
-        }
-        countryList.add(country);
-
-        countryRepository1.save(country);
-        serviceProviderRepository1.save(serviceProvider);
-        return serviceProvider;
     }
 }
