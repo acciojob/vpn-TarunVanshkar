@@ -36,27 +36,27 @@ public class UserServiceImpl implements UserService
 
             Country country = new Country();
 
-            if (countryName.equals("aus"))
+            if (countryName.equalsIgnoreCase("aus"))
             {
                 country.setCountryName(CountryName.AUS);
                 country.setCode(CountryName.AUS.toCode());
             }
-            if (countryName.equals("usa"))
+            if (countryName.equalsIgnoreCase("usa"))
             {
                 country.setCountryName(CountryName.USA);
                 country.setCode(CountryName.USA.toCode());
             }
-            if (countryName.equals("ind"))
+            if (countryName.equalsIgnoreCase("ind"))
             {
                 country.setCountryName(CountryName.IND);
                 country.setCode(CountryName.IND.toCode());
             }
-            if (countryName.equals("jpn"))
+            if (countryName.equalsIgnoreCase("jpn"))
             {
                 country.setCountryName(CountryName.JPN);
                 country.setCode(CountryName.JPN.toCode());
             }
-            if (countryName.equals("chi"))
+            if (countryName.equalsIgnoreCase("chi"))
             {
                 country.setCountryName(CountryName.CHI);
                 country.setCode(CountryName.CHI .toCode());
@@ -85,9 +85,7 @@ public class UserServiceImpl implements UserService
         User user = userRepository3.findById(userId).get();
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
 
-        List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
-        serviceProviderList.add(serviceProvider);
-        user.setServiceProviderList(serviceProviderList);
+        user.getServiceProviderList().add(serviceProvider);
         serviceProvider.getUsers().add(user);
 
         serviceProviderRepository3.save(serviceProvider);
